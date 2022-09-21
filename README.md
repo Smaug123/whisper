@@ -17,6 +17,10 @@ A Transformer sequence-to-sequence model is trained on various speech processing
 
 ## Setup
 
+On MacOS, I used a Nix flake; if you have Nix, then `nix develop`, otherwise you'll have to make sure ffmpeg is installed yourself (and you may require Rust to build one of the pip packages).
+Then `python3 -m venv venv && source venv/bin/activate`, then `python3 -m pip install -r requirements.txt` and you should be good to go.
+I haven't been able to get it to go fast with the GPU (i.e. with `--device=mps`) - it works, but much more slowly than CPU, and with a nasty stack trace from Torch at the end.
+
 We used Python 3.9.9 and [PyTorch](https://pytorch.org/) 1.10.1 to train and test our models, but the codebase is expected to be compatible with Python 3.7 or later and recent PyTorch versions. The codebase also depends on a few Python packages, most notably [HuggingFace Transformers](https://huggingface.co/docs/transformers/index) for their fast tokenizer implementation and [ffmpeg-python](https://github.com/kkroening/ffmpeg-python) for reading audio files. The following command will pull and install the latest commit from this repository, along with its Python dependencies 
 
     pip install git+https://github.com/openai/whisper.git 

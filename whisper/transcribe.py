@@ -66,9 +66,17 @@ def transcribe(
     if model.device == torch.device("cpu"):
         if torch.cuda.is_available():
             warnings.warn("Performing inference on CPU when CUDA is available")
+        elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available() and torch.backends.mps.is_built():
+            warnings.warn("Performing inference on CPU when MPS is available")
+
         if dtype == torch.float16:
             warnings.warn("FP16 is not supported on CPU; using FP32 instead")
             dtype = torch.float32
+
+    # hacks hacks hacks
+    if str(model.device).startswith("mps"):
+        warnings.warn("FP16 is not supported on MPS; using FP32 instead")
+        dtype = torch.float32
 
     if dtype == torch.float32:
         decode_options["fp16"] = False
